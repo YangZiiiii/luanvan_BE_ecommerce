@@ -34,6 +34,15 @@ public class CommentController {
         ));
     }
 
+    @PutMapping("/approve/{commentId}")
+    public ResponseEntity<AppResponse<String>> approveComment(@PathVariable String commentId){
+        commentService.approveComment(commentId);
+        return ResponseEntity.ok(AppResponse.builderResponse(
+           SuccessCode.UPDATED,
+           "Approved comment successfully"
+        ));
+    }
+
     @GetMapping("/user/uid/{uid}")
     public ResponseEntity<List<CommentResponse>> getCommentsByUid(@PathVariable Long uid) {
         List<CommentResponse> comments = commentService.getCommentsByUserId(uid);

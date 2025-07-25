@@ -39,6 +39,9 @@ public class UserController {
         );
     }
 
+
+
+
     @DeleteMapping("/{uid}")
     public ResponseEntity<AppResponse<String>> deleteUser(@PathVariable Long uid) {
         userService.delete(uid);
@@ -54,6 +57,16 @@ public class UserController {
                SuccessCode.UPDATED,
                userService.updateInfo(uid, userForm)
        ));
+    }
+
+
+    @PutMapping("/lock/{uid}")
+    public ResponseEntity<AppResponse<String>> lockedUser(@PathVariable Long uid) {
+        userService.lockUser(uid);
+        return ResponseEntity.ok(AppResponse.builderResponse(
+                SuccessCode.UPDATED,
+               " User locked successfully"
+        ));
     }
 
     @PutMapping("/avatar/{uid}")

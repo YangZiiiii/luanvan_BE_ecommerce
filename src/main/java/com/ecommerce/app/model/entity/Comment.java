@@ -1,5 +1,7 @@
 package com.ecommerce.app.model.entity;
 
+import com.ecommerce.app.utils.Enum.CommentStatus;
+import com.ecommerce.app.utils.Enum.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
@@ -27,5 +29,7 @@ public class Comment extends BaseEntity {
 
     private double rating;
     private String content;
+    private Status status = Status.INACTIVE;
+    private CommentStatus commentStatus = CommentStatus.PENDING;
 
 }

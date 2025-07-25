@@ -11,6 +11,8 @@ import com.ecommerce.app.repository.CommentRepository;
 import com.ecommerce.app.repository.ProductRepository;
 import com.ecommerce.app.repository.UserRepositiory;
 import com.ecommerce.app.service.CommentService;
+import com.ecommerce.app.service.ProductSerice;
+import com.ecommerce.app.utils.Enum.CommentStatus;
 import com.ecommerce.app.utils.Enum.ErrorCode;
 import com.ecommerce.app.utils.Enum.Role;
 import com.ecommerce.app.utils.Enum.Status;
@@ -34,6 +36,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepositiory userRepository;
 
     private final ProductRepository productRepository;
+    private final ProductSerice productSerice;
 
 
     @Override
@@ -68,6 +71,21 @@ public class CommentServiceImpl implements CommentService {
         return CommentMapper.toResponseList(comments);
 
     }
+
+    @Override
+    public  void approveComment(String commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new AppException(ErrorCode.COMMENT_NOT_FOUND));
+        if(comment.getCommentStatus() == CommentStatus.PENDING){
+            comment.setCommentStatus(CommentStatus.APPROVED);
+            comment.setStatus(Status.ACTIVE);
+        }else {
+            comment.setCommentStatus(CommentStatus.PENDING);
+            comment.setStatus(Status.INACTIVE);
+        }
+        productSerice.updateProductRating(comment.getProduct().getId());
+        commentRepository.save(comment);
+    }
+
 
     @Override
     public Page<CommentResponse> getAllComments(int page, int size, String sortBy, String direction) {

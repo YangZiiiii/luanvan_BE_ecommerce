@@ -39,6 +39,8 @@ public interface ProductRepository extends JpaRepository<Product, String> {
                     "COALESCE(AVG(c.rating), 0) AS avgRating " +
                     "FROM product p " +
                     "LEFT JOIN comments c ON p.id = c.product_id " +
+                    "AND c.status = 0 " +
+                    "AND c.comment_status = 1 " +
                     "GROUP BY p.id " +
                     "ORDER BY avgRating DESC",
             countQuery = "SELECT COUNT(DISTINCT p.id) FROM product p",

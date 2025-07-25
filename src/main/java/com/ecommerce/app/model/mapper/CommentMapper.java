@@ -5,6 +5,8 @@ import com.ecommerce.app.model.dao.response.dto.CommentResponse;
 import com.ecommerce.app.model.entity.Comment;
 import com.ecommerce.app.model.entity.Product;
 import com.ecommerce.app.model.entity.User;
+import com.ecommerce.app.utils.Enum.CommentStatus;
+import com.ecommerce.app.utils.Enum.Status;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -17,6 +19,8 @@ public class CommentMapper {
                 .content(form.getContent() != null ? form.getContent().trim() : null)
                 .user(user)
                 .product(product)
+                .status(Status.INACTIVE)
+                .commentStatus(CommentStatus.PENDING)
                 .build();
     }
 
@@ -33,6 +37,8 @@ public class CommentMapper {
 
 
     public static CommentResponse toUserInfoResponse(Comment comment) {
+
+
         return CommentResponse.builder()
                 .commentId(comment.getId())
                 .userUid(comment.getUser().getUID() != null ? comment.getUser().getUID() : null)
@@ -43,6 +49,7 @@ public class CommentMapper {
                 .avatar(comment.getUser().getAvatar())
                 .email(comment.getUser().getEmail())
                 .status(comment.getStatus())
+                .commentStatus(comment.getCommentStatus())
                 .createdAt(comment.getCreatedAt())
                 .build();
     }

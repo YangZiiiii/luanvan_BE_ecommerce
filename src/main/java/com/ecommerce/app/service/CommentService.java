@@ -18,5 +18,7 @@ public interface CommentService {
     void deleteComment(String commentId, Long userUid);
     void hideComment(String commentId, Long userUid);
 
+    void approveComment(String commentId);
+
     CommentResponse updateComment(String commentId, Long userUid, CommentForm form);
 }

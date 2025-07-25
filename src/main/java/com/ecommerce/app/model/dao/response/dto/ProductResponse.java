@@ -1,6 +1,7 @@
 package com.ecommerce.app.model.dao.response.dto;
 
 import com.ecommerce.app.model.dao.response.dto.Variant.ProductVariantResponse;
+import com.ecommerce.app.utils.Enum.CommentStatus;
 import com.ecommerce.app.utils.Enum.Status;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductResponse {
     private String id;
     private String name;
@@ -35,6 +36,7 @@ public class ProductResponse {
     private double avgRating;
     private int noOfRating;
     private Status status;
+    private CommentStatus commentStatus;
     private Boolean hasVariants;
     private Long createdAt;
     private Long updatedAt;

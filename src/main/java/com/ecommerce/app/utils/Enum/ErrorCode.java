@@ -12,7 +12,7 @@ public enum ErrorCode {
     /** Category */
     CATEGORY_NOT_FOUND(404, "Category not found", HttpStatus.NOT_FOUND),
     CATEGORY_ALREADY_EXISTS(400, "Category already exists", HttpStatus.BAD_REQUEST),
-    CATEGORY_IN_USE_BY_PRODUCT(400, "Category in use by product" , HttpStatus.BAD_REQUEST ),
+    CATEGORY_IN_USE_BY_PRODUCT(400, "Loại sản phẩm đã được sử dụng" , HttpStatus.BAD_REQUEST ),
     CATEGORY_CANNOT_DELETE(400, "Trạng thái loại sản phẩm đang xóa, không xử lý tác vụ" , HttpStatus.BAD_REQUEST ),
 
 
@@ -45,6 +45,7 @@ public enum ErrorCode {
     ACCOUNT_NOT_VERIFIED(400,"Account not verified !" , HttpStatus.FORBIDDEN ),
     INVALID_VERIFICATION_TOKEN(400,"Invalid verification token" , HttpStatus.BAD_REQUEST ),
     USER_NOT_FOUND(404,"User not found !" , HttpStatus.NOT_FOUND ),
+    ACCOUNT_IS_LOCKED(400,"Account is locked !" , HttpStatus.FORBIDDEN ),
 
     COLLECTION_NOT_FOUND(404,"Collection not found !" , HttpStatus.NOT_FOUND ),
     COLLECTION_CANNOT_DELETE(400,"Collection Cannot delete !" , HttpStatus.BAD_REQUEST ),
@@ -52,7 +53,7 @@ public enum ErrorCode {
 
     BRAND_NOT_FOUND(404,"Brand not found !" , HttpStatus.NOT_FOUND ),
     BRAND_CANNOT_DELETE(400,"Brand not found !" , HttpStatus.BAD_REQUEST ),
-    BRAND_IN_USE_BY_PRODUCT(400, "Brand in use by product !" , HttpStatus.BAD_REQUEST ),
+    BRAND_IN_USE_BY_PRODUCT(400, "Thương hiệu đã được sử dụng" , HttpStatus.BAD_REQUEST ),
 
     BANNER_NOT_FOUND(404,"Banner not found !" , HttpStatus.NOT_FOUND ),
     BANNER_CANNOT_DELETE(400,"Banner not found !" , HttpStatus.BAD_REQUEST ),
@@ -83,10 +84,12 @@ public enum ErrorCode {
     PASSWORD_NOT_EQUAL(400,"Password not equal !" , HttpStatus.BAD_REQUEST ),
     PASSWORD_NOT_MATCHES(400,"Password not matchces !" , HttpStatus.BAD_REQUEST ),
 
+    UNKNOWN_ERROR(400,"Unknown error !" , HttpStatus.INTERNAL_SERVER_ERROR ),
+
 
 
     PRODUCT_VARIANT_NOT_FOUND(404,"Product variant not found !" , HttpStatus.NOT_FOUND ),
-    UNAUTHORIZED(401,"Unauthorized !" , HttpStatus.UNAUTHORIZED ),;
+    UNAUTHORIZED(401,"Unauthorized !" , HttpStatus.UNAUTHORIZED ), ;
     private final int code;
     private final String message;
     private final HttpStatusCode statusCode;

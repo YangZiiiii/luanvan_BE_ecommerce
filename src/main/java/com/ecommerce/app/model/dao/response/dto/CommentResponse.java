@@ -1,5 +1,6 @@
 package com.ecommerce.app.model.dao.response.dto;
 
+import com.ecommerce.app.utils.Enum.CommentStatus;
 import com.ecommerce.app.utils.Enum.Status;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -17,6 +18,7 @@ public class CommentResponse {
     private Double rating;
     private String content;
     private Status status = Status.ACTIVE;
+    private CommentStatus commentStatus = CommentStatus.PENDING;
     private String productId;
     private String firstName;
     private String lastName;

@@ -3,7 +3,8 @@ package com.ecommerce.app.utils.Enum;
 public enum Status {
     ACTIVE(0),
     INACTIVE(1),
-    DELETED(2);
+    DELETED(2),
+    LOCKED(3);
 
     private final int value;
 

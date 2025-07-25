@@ -68,19 +68,36 @@ public class CategoryServiceImpl implements CategoryService {
 
     })
     @Override
-    public void changeStatus(String id){
+    public void changeStatus(String id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
 
-        switch (category.getStatus()) {
-            case ACTIVE -> category.setStatus(Status.INACTIVE);
-            case INACTIVE -> category.setStatus(Status.ACTIVE);
+        Status currentStatus = category.getStatus();
+        Status nextStatus;
+
+        switch (currentStatus) {
+            case ACTIVE -> nextStatus = Status.INACTIVE;
+            case INACTIVE -> nextStatus = Status.ACTIVE;
             case DELETED -> throw new AppException(ErrorCode.CATEGORY_CANNOT_DELETE);
+            default -> throw new AppException(ErrorCode.UNKNOWN_ERROR);
         }
 
+        // Nếu vì lý do nào đó nextStatus bị set là DELETED → kiểm tra
+
+        if (nextStatus == Status.DELETED) {
+            if (!category.getProducts().isEmpty()) {
+                throw new AppException(ErrorCode.CATEGORY_IN_USE_BY_PRODUCT);
+            }
+            throw new AppException(ErrorCode.CATEGORY_CANNOT_DELETE); // chặn luôn mọi chuyển sang deleted
+        }
+
+        category.setStatus(nextStatus);
         category.setUpdatedAt(Instant.now().toEpochMilli());
         categoryRepository.save(category);
     }
+
+
+
 
 
 

@@ -2,6 +2,7 @@
 
     import com.ecommerce.app.utils.Enum.Role;
     import com.ecommerce.app.utils.Enum.Status;
+    import com.ecommerce.app.utils.Enum.UserStatus;
     import com.fasterxml.jackson.annotation.JsonIgnore;
     import com.fasterxml.jackson.annotation.JsonInclude;
     import jakarta.persistence.*;
@@ -62,6 +63,9 @@
 
         @Enumerated(EnumType.STRING)
         private Role role;
+
+        @Enumerated(EnumType.STRING)
+        private UserStatus userStatus;
 
         @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
         private List<RefreshToken> refreshTokens = new ArrayList<>();

@@ -42,13 +42,14 @@ public class BrandImpl implements BrandService {
     }
 
     @Override
-    @Cacheable(value = "BRAND_BY_ID", key = "#id")
+//    @Cacheable(value = "BRAND_BY_ID", key = "#id")
     public BrandResponse findById(String id) {
         Brand brand = brandRepository.findById(id)
-                .orElseThrow(()-> new AppException(ErrorCode.BRAND_NOT_FOUND));
-        BrandResponse brandResponse = BrandMapper.toBrandResponse(brand);
-        return brandResponse;
+                .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_FOUND));
+        return BrandMapper.toBrandResponse(brand); // dùng mapper
     }
+
+
 
 //    @Override
 //    public Brand findByIdIn(String id) {
@@ -93,6 +94,7 @@ public class BrandImpl implements BrandService {
                 brandForm.getName(),
                 brandForm.getDescription(),
                 slugify.generateSlug(brandForm.getName()),
+                brandForm.getStatus(),
                 null
         );
         Brand savedBrand = brandRepository.save(brand);
@@ -107,8 +109,8 @@ public class BrandImpl implements BrandService {
     public Brand updateBrand( String id,BrandForm brandForm) {
        Brand brand = brandRepository.findById(id).orElseThrow(()-> new AppException(ErrorCode.BRAND_NOT_FOUND));
        brand.setName(brandForm.getName());
-       brand.setDescription(brandForm.getDescription());
        brand.setSlug(slugify.generateSlug(brandForm.getName()));
+       brand.setStatus(brandForm.getStatus());
        Brand savedBrand = brandRepository.save(brand);
        return savedBrand;
     }
@@ -132,10 +134,10 @@ public class BrandImpl implements BrandService {
     @Override
     public void changeStatus(String id) {
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_FOUND));
-        if (brand.getStatus() == Status.ACTIVE) {
-            brand.setStatus(Status.INACTIVE);
-        } else {
-            brand.setStatus(Status.ACTIVE);
+        switch (brand.getStatus()) {
+            case ACTIVE -> brand.setStatus(Status.INACTIVE);
+            case INACTIVE -> brand.setStatus(Status.ACTIVE);
+            case DELETED -> throw new AppException(ErrorCode.BRAND_CANNOT_DELETE);
         }
         brandRepository.save(brand);
     }

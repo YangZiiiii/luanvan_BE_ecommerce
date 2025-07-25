@@ -12,6 +12,7 @@ import com.ecommerce.app.service.CloudinaryService;
 import com.ecommerce.app.service.UserService;
 
 import com.ecommerce.app.utils.Enum.ErrorCode;
+import com.ecommerce.app.utils.Enum.Status;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void lockUser(Long uid) {
+        User user = userRepositiory.findByUID(uid).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        if(user.getStatus() == Status.ACTIVE){
+            user.setStatus(Status.LOCKED);
+        }else {
+            user.setStatus(Status.ACTIVE);
+        }
+        userRepositiory.save(user);
+    }
+
+    @Override
     public UserResponse getUserResponseByUid(Long uid) {
         User user = userRepositiory.findByUID(uid)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
@@ -95,6 +107,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse updateInfo(Long userUid, UserForm userForm){
         User user = userRepositiory.findByUID(userUid).orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND));
+        if(user.getPhone().equals(userForm.getPhone())){
+            throw new AppException(ErrorCode.PHONE_ALREADY_EXISTS);
+        }
         user.setFirstName(userForm.getFirstName());
         user.setLastName(userForm.getLastName());
         user.setPhone(userForm.getPhone());

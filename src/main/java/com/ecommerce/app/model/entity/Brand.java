@@ -1,5 +1,6 @@
 package com.ecommerce.app.model.entity;
 
+import com.ecommerce.app.utils.Enum.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -20,6 +21,7 @@ public class Brand extends BaseEntity{
     private String name;
     private String description;
     private String slug;
+    private Status status;
 
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
     @JsonIgnore

@@ -16,6 +16,7 @@ import com.ecommerce.app.model.mapper.ProductMapper;
 import com.ecommerce.app.repository.*;
 import com.ecommerce.app.service.*;
 import com.ecommerce.app.service.utils.SlugifyService;
+import com.ecommerce.app.utils.Enum.CommentStatus;
 import com.ecommerce.app.utils.Enum.ErrorCode;
 import com.ecommerce.app.utils.Enum.Status;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -56,6 +57,7 @@ public class ProductServiceImpl implements ProductSerice {
     BrandRepository brandRepository;
     CollectionRepository collectionRepository;
     TagRepository tagRepository;
+    CommentRepository commentRepository;
 
     CategoryService categoryService;
     BrandService brandService;
@@ -153,6 +155,25 @@ public class ProductServiceImpl implements ProductSerice {
             return response;
         });
     }
+
+    @Override
+    public void updateProductRating(String productId) {
+        List<Comment> approvedComments = commentRepository.findByProduct_Id(productId).stream()
+                .filter(c -> c.getStatus() == Status.ACTIVE && c.getCommentStatus() == CommentStatus.APPROVED)
+                .collect(Collectors.toList());
+
+        double avgRating = approvedComments.stream()
+                .mapToDouble(Comment::getRating)
+                .average()
+                .orElse(0.0);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        product.setAvgRating(avgRating);
+        productRepository.save(product);
+    }
+
 
 
 

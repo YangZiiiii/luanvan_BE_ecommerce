@@ -95,6 +95,10 @@ public class AuthServiceImpl implements AuthService {
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(loginForm.getUsername());
         User user = userService.findByUsername(loginForm.getUsername());
 
+        if(user.getStatus() != Status.ACTIVE) {
+            throw new AppException(ErrorCode.ACCOUNT_IS_LOCKED);
+        }
+
 
         return new AuthResponse(
                 accessToken,

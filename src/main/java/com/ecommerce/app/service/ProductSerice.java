@@ -38,6 +38,8 @@ public interface ProductSerice {
 
     Page<ProductResponse>  getTopRatedProducts(int page, int size);
 
+    void updateProductRating(String productId);
+
     List<String> uploadImagesToProduct(String productId, List<MultipartFile> files);
     void removeImagesFromProduct(String productId);
 
