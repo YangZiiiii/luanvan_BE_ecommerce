@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
 
-    @Value("${server.url}")
+    @Value("http://127.0.0.1:5500")
     String serverUrl;
 
     @Override
@@ -80,7 +80,10 @@ public class AuthServiceImpl implements AuthService {
             userService.save(user);
         }
 
-        String confirmationUrl = serverUrl + "/api/v1/auth/verify-email?token=" + token;
+//        String confirmationUrl = serverUrl + "/api/v1/auth/verify-email?token=" + token;
+            String confirmationUrl = serverUrl + "/register_result.html?token=" + token;
+
+//        String confirmationUrl = "http://160.30.192.116:8080/api/v1/auth/verify-email?token=" + token;
         mailService.sendRegistrationConfirmMail(registerForm.getEmail(), confirmationUrl, registerForm.getFirstName(), registerForm.getLastName());
         return user;
     }

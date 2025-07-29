@@ -95,7 +95,8 @@ public class UserServiceImpl implements UserService {
     public UserResponse getUserResponseByUid(Long uid) {
         User user = userRepositiory.findByUID(uid)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        return UserMapper.toResponse(user);
+        int numberFavouristes = favouriteRepository.countByUserUid(uid);
+        return UserMapper.toResponse(user,numberFavouristes);
     }
 
     @Override
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userForm.getLastName());
         user.setPhone(userForm.getPhone());
         userRepositiory.save(user);
-        return UserMapper.toResponse(user);
+        return UserMapper.toResponse(user, 0);
     }
 
     @Override
@@ -127,7 +128,7 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(avatarUrl);
         userRepositiory.save(user);
 
-        return UserMapper.toResponse(user);
+        return UserMapper.toResponse(user, 0);
     }
 
 

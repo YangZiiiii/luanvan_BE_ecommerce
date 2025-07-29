@@ -1,5 +1,6 @@
 package com.ecommerce.app.controller;
 
+import com.ecommerce.app.exception.AppException;
 import com.ecommerce.app.model.dao.request.Auth.*;
 import com.ecommerce.app.model.dao.response.AppResponse;
 import com.ecommerce.app.model.dao.response.dto.AuthResponse;
@@ -7,6 +8,7 @@ import com.ecommerce.app.model.entity.User;
 import com.ecommerce.app.service.AuthService;
 import com.ecommerce.app.service.UserService;
 import com.ecommerce.app.utils.Enum.SuccessCode;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -52,6 +57,20 @@ public class AuthController {
                 SuccessCode.VERIFY_ACCOUNT, null
         ));
     }
+
+//    @GetMapping("/verify-email")
+//    public void verify(@RequestParam String token, HttpServletResponse response) throws IOException {
+//        try {
+//            authservice.verifyEmail(token);
+//            // Nếu xác thực thành công ➜ redirect về trang kết quả thành công
+//            response.sendRedirect("http://160.30.192.116:5500/register_result.html?success=true");
+//        } catch (AppException e) {
+//            // Nếu thất bại ➜ redirect về trang kết quả kèm lỗi
+//            String errorMessage = URLEncoder.encode(e.getMessage(), StandardCharsets.UTF_8);
+//            response.sendRedirect("http://160.30.192.116:5500/register_result.html?success=false&message=" + errorMessage);
+//        }
+//    }
+
 
     @PostMapping("/login")
     public ResponseEntity<AppResponse<AuthResponse>> login(@RequestBody @Valid LoginForm form) {

@@ -158,7 +158,8 @@ public class OrderServiceImpl implements OrderService {
                                 r.getEmail(),
                                 r.getPhone(),
                                 null,
-                                null
+                                null,
+                                0
                         ))
                         .totalOrders(r.getTotalOrder())
                         .build())
